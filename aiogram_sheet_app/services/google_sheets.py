@@ -7,7 +7,7 @@ SCOPE = [
     "https://spreadsheets.google.com/feeds",
     "https://www.googleapis.com/auth/drive",
 ]
-CREDENTIALS_FILE = "../credentials.json"  # Path to the JSON file
+CREDENTIALS_FILE = "credentials.json"  # Path to the JSON file
 SHEET_NAME = "Ревизия касс"  # Name of your Google Sheet
 
 # Initialize Google Sheets client
@@ -78,8 +78,16 @@ def test_get_data():
     table_id = get_table_id(gc, SHEET_NAME)
     table = get_table_by_id(gc, table_id)
     data = extract_data_from_sheet(table, "СкладРуставели")
+    res_dict = {}
     for i in data:
-        print(i)
+        for key, value in i.items():
+            if value:
+                res_dict.setdefault(key, []).append(value)
+
+    message = ""
+    for key, value in res_dict.items():
+        message += f"{key}: {'\n '.join(value)}\n\n"
+    return message
 
 
 if __name__ == "__main__":

@@ -5,11 +5,7 @@ from aiogram.filters import Command, CommandStart, StateFilter
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, CallbackQuery, FSInputFile
 
-from aiogram_sheet_app.services import (
-    get_sheet_data,
-    get_worksheet_info,
-    get_sheet_id,
-)
+from aiogram_sheet_app.services import test_get_data
 
 router = Router()
 
@@ -33,11 +29,10 @@ async def help_command(message: Message, bot: Bot, state: FSMContext):
 
 @router.message(Command(commands=["get_sheet_info"]))
 async def get_sheet_info(message: Message, bot: Bot, state: FSMContext):
-    sheet = await get_sheet_id()
-    sheets_list = await get_worksheet_info(sheet)
+    msg = test_get_data()
     await bot.send_message(
         chat_id=message.chat.id,
-        text=f"Список таблиц:\n{sheets_list}",
+        text=msg,
     )
 
 
